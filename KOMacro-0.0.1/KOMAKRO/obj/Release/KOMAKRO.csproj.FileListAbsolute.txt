@@ -1,0 +1,12 @@
+C:\Users\bedir\source\repos\KOMAKRO\KOMAKRO\bin\Release\KOMAKRO.exe.config
+C:\Users\bedir\source\repos\KOMAKRO\KOMAKRO\bin\Release\KOMAKRO.exe
+C:\Users\bedir\source\repos\KOMAKRO\KOMAKRO\bin\Release\KOMAKRO.pdb
+C:\Users\bedir\source\repos\KOMAKRO\KOMAKRO\bin\Release\SimpleTCP.dll
+C:\Users\bedir\source\repos\KOMAKRO\KOMAKRO\obj\Release\KOMAKRO.csproj.AssemblyReference.cache
+C:\Users\bedir\source\repos\KOMAKRO\KOMAKRO\obj\Release\KOMAKRO.KOMacro.resources
+C:\Users\bedir\source\repos\KOMAKRO\KOMAKRO\obj\Release\KOMAKRO.Properties.Resources.resources
+C:\Users\bedir\source\repos\KOMAKRO\KOMAKRO\obj\Release\KOMAKRO.csproj.GenerateResource.cache
+C:\Users\bedir\source\repos\KOMAKRO\KOMAKRO\obj\Release\KOMAKRO.csproj.CoreCompileInputs.cache
+C:\Users\bedir\source\repos\KOMAKRO\KOMAKRO\obj\Release\KOMAKRO.csproj.CopyComplete
+C:\Users\bedir\source\repos\KOMAKRO\KOMAKRO\obj\Release\KOMAKRO.exe
+C:\Users\bedir\source\repos\KOMAKRO\KOMAKRO\obj\Release\KOMAKRO.pdb

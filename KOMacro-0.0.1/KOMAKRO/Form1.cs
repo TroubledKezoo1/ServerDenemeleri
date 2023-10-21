@@ -12,12 +12,13 @@ using System.Windows.Forms;
 using System.Net.Sockets;
 using System.IO;
 using System.Threading;
-
+using SimpleTCP;
 namespace KOMAKRO
 {
     public partial class KOMacro : Form
     {
-        public static TcpClient client;
+        public static SimpleTcpClient Client;
+        public static TcpClient client = new TcpClient();
         public static NetworkStream stream;
         public static string username;
         public static string lobyname;
@@ -65,31 +66,75 @@ namespace KOMAKRO
         {
             btnJoinStop.Enabled = false;
             btnCreateStop.Enabled = false;
-            Thread listenThread = new Thread(ListenForServerResponse);
-            listenThread.Start();
-            client.Connect("37.148.210.156", 8080);
-            stream = client.GetStream();
+            
+            Client = new SimpleTcpClient();
+            Client.Connect("127.0.0.1", 8080);
+            Client.DataReceived += Client_DataReceived;
+
+            //stream = client.GetStream();
+
+            //Thread listenThread = new Thread(ListenForServerResponse);
+            //listenThread.IsBackground = true;
+            //listenThread.Start();
         }
-        static void ListenForServerResponse()
+
+        private void Client_DataReceived(object sender, SimpleTCP.Message e)
         {
-            byte[] buffer = new byte[1024];
-            int bytesRead;
-
-            while (true)
+            try
             {
-                bytesRead = stream.Read(buffer, 0, buffer.Length);
-                string response = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                string response = e.MessageString;
                 Console.WriteLine("Sunucu cevabı: " + response);
-                keyPressedByApplication = true;
 
-                if (response == "q" || response == "Q")
+                // Burada gelen veriyi işlemek için ne yapmanız gerektiğine karar vermelisiniz.
+
+
+                if (response[response.Length - 1] == 'q' || response[response.Length -1] == 'Q')
                 {
                     keybd_event((byte)Keys.Q, 0, KEYEVENTF_KEYDOWN, 0);
                     keybd_event((byte)Keys.Q, 0, KEYEVENTF_KEYUP, 0);
-                } 
-                keyPressedByApplication = false;
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine("Veri Okuma Hatası :: "+ ex.Message);
             }
         }
+
+        //static void ListenForServerResponse()
+        //{
+        //    try
+        //    {
+        //        byte[] buffer = new byte[1024];
+        //        int bytesRead;
+
+        //        while (true)
+        //        {
+        //            bytesRead = stream.Read(buffer, 0, buffer.Length);
+        //            if (bytesRead > 0)
+        //            {
+        //                string response = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+        //                Console.WriteLine("Sunucu cevabı: " + response);
+
+        //                // Burada gelen veriyi işlemek için ne yapmanız gerektiğine karar vermelisiniz.
+
+        //                if (response == "q" || response == "Q")
+        //                {
+        //                    keybd_event((byte)Keys.Q, 0, KEYEVENTF_KEYDOWN, 0);
+        //                    keybd_event((byte)Keys.Q, 0, KEYEVENTF_KEYUP, 0);
+        //                }
+        //            }
+        //        }
+        //    }
+        //    catch (IOException ex)
+        //    {
+        //        // İstisnaları yakala ve işle
+        //        Console.WriteLine("Veri okuma hatası: " + ex.Message);
+        //    }
+        //}
+
 
         static void LeaveLobby(string usernames , string lobbyNames)
         {
@@ -141,12 +186,12 @@ namespace KOMAKRO
             if (!keyPressedByApplication && nCode >= 0 && wParam == (IntPtr)WM_KEYDOWN)
             {
                 int vkCode = Marshal.ReadInt32(lParam);  // Read the virtual key code
-
                 // Convert virtual key code to a string representation
                 string key = ((Keys)vkCode).ToString();
 
                 // Print the key to the console
-                SendCommand(key);
+                string Commands = "SEND_MESSAGE:"+lobyname+":"+username+":"+key;
+                SendCommand(Commands);
             }
 
             return CallNextHookEx(hookId, nCode, wParam, lParam);
@@ -198,8 +243,10 @@ namespace KOMAKRO
         }
         static void SendCommand(string command)
         {
-            byte[] data = Encoding.UTF8.GetBytes(command);
-            stream.Write(data, 0, data.Length);
+            //byte[] data = Encoding.UTF8.GetBytes(command);
+           // stream.Write(data, 0, data.Length);
+            Client.Write(command);
+            
         }
 
         private void txtServerHost_Click(object sender, EventArgs e)

@@ -99,7 +99,7 @@ class Server
             return lobbies;
         }
 
-        public void AddUserToLobby(string username,string lobbyName,bool isHost,TcpClient tcpClient)
+        public void AddUserToLobby(string username, string lobbyName, bool isHost, TcpClient tcpClient)
         {
             Lobby lobby = GetLobbyByName(lobbyName);
             if (lobby != null)
@@ -139,7 +139,7 @@ class Server
             TcpClient client = server.AcceptTcpClient();
             Console.WriteLine("Yeni bir istemci bağlandı.");
 
-            
+
 
             Thread clientThread = new Thread(HandleClient);
             clientThread.Start(client);
@@ -166,7 +166,7 @@ class Server
                 {
                     string action = command[0];
                     string[] parameters = new string[command.Length - 1];
-                    for (int i = 0; i < command.Length -1; i++)
+                    for (int i = 0; i < command.Length - 1; i++)
                     {
                         parameters[i] = command[i + 1];
                     }
@@ -184,7 +184,7 @@ class Server
                                 int maxPlayers = int.Parse(parameters[1]);
                                 string hostUsername = parameters[2];
                                 serverInner.CreateLobby(lobbyName, maxPlayers);
-                                serverInner.AddUserToLobby(hostUsername, lobbyName,true , client);
+                                serverInner.AddUserToLobby(hostUsername, lobbyName, true, client);
                                 Console.WriteLine("Lobi oluşturuldu: " + lobbyName);
                             }
                             break;
@@ -194,7 +194,7 @@ class Server
                             {
                                 string lobbyName = parameters[0];
                                 string username = parameters[1];
-                                serverInner.AddUserToLobby(username, lobbyName,false, client);
+                                serverInner.AddUserToLobby(username, lobbyName, false, client);
                                 Console.WriteLine(username + " lobiye katıldı: " + lobbyName);
                             }
                             break;
